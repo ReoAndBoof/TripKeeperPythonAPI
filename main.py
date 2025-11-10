@@ -6,7 +6,7 @@ app = Flask(__name__, static_folder="build")
 # ルートアクセスで index.html を返す
 @app.route("/")
 def index():
-    return send_from_directory(app.static_folder, "index.html")
+    return send_from_directory(app.static_folder, "API_index.html")
 
 # build フォルダ内の他の静的ファイルを返す
 @app.route("/<path:path>")
