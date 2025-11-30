@@ -17,4 +17,5 @@ your-project/
 ├─ requirements.txt
 ├─ render.yaml             ← （任意）Render 自動設定
 ├─ .gitignore
+├─ main.py                 ← Render エントリ用
 └─ README.md
