@@ -1,7 +1,11 @@
 from flask import Flask, send_from_directory
 import os
 
-app = Flask(__name__, static_folder="build")
+# プロジェクトルートを基準に build ディレクトリの絶対パスを作る
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BUILD_DIR = os.path.join(BASE_DIR, "build")
+
+app = Flask(__name__, static_folder=BUILD_DIR)
 
 # ルートアクセスで index.html を返す
 @app.route("/")
