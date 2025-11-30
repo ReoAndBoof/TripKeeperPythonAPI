@@ -5,7 +5,7 @@ your-project/
 │  │   ├─ scraping.py      ← スクレイピングを叩くAPI or 画面
 │  │   ├─ __init__.py
 │  ├─ services/
-│  │   ├─ scraping_service.py  ← スクレイピングのビジネスロジック
+│  │   ├─ scraping_service.py  ← 複数サイトのスクレイピングをまとめたり、DB 保存・整形などをやる「サービス」層
 │  │   └─ __init__.py
 │  ├─ scrapers/
 │  │   ├─ base.py          ← 共通処理（ヘッダ設定・リトライなど）
