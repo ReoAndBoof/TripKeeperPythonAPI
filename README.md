@@ -2,15 +2,17 @@ your-project/
 ├─ app/
 │  ├─ main.py              ← FastAPI/Flask 本体
 │  ├─ routes/
-│  │   ├─ wix.py           ← Wix callbacks / API routes
-│  │   ├─ stripe.py        ← Stripe setup-intent / webhook
-│  │   └─ __init__.py
+│  │   ├─ scraping.py      ← スクレイピングを叩くAPI or 画面
+│  │   ├─ __init__.py
 │  ├─ services/
-│  │   ├─ wix_service.py   ← Wix SDK or OAuth refresh logic
-│  │   ├─ stripe_service.py← Stripe API wrapper
+│  │   ├─ scraping_service.py  ← スクレイピングのビジネスロジック
+│  │   └─ __init__.py
+│  ├─ scrapers/
+│  │   ├─ base.py          ← 共通処理（ヘッダ設定・リトライなど）
+│  │   ├─ example_site.py  ← 特定サイト用スクレイパー
 │  │   └─ __init__.py
 │  ├─ utils/
-│  │   ├─ logger.py        ← ログ設定
+│  │   ├─ logger.py
 │  │   └─ __init__.py
 │  └─ __init__.py
 │
