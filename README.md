@@ -27,10 +27,29 @@ scrapers …「Playwrightを叩いて、HTMLをパースして、Pythonのデー
 utils …「どこからでも使いたい共通関数（ログなど）」
 app/main.py & ルート main.py …「アプリの起動とルーティング登録」
 
-ここまで組めば：
-
-ブラウザからは GET /api/booking/search?... を叩くだけ
-
-Flask はサービス関数を呼び出すだけ
-
-Playwright の処理は app/scrapers/booking.py にまとまっている
+ブラウザ/Wix/
+        │
+        ▼
+【① HTTP リクエスト】
+GET /api/booking/search?city=Tokyo&checkin=2025-11-20&checkout=2025-11-22
+        │
+        ▼
+app/main.py（Flask アプリ本体）
+        │
+        ▼
+app/routes/booking.py（ルート＝コントローラ）
+        │
+        ▼
+app/services/booking_service.py（ビジネスロジック）
+        │
+        ▼
+app/scrapers/booking.py（Playwrightスクレイパー）
+        │
+        ▼
+Booking.com（外部サイト）
+        │
+        ▼
+【ホテル情報のJSON取得】
+        │
+        ▼
+ブラウザに JSON レスポンスが返る
