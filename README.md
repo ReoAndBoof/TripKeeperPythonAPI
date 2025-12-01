@@ -1,15 +1,14 @@
 your-project/
 ├─ app/
-│  ├─ main.py              ← FastAPI/Flask 本体
+│  ├─ main.py                 ← Flask 本体（静的配信 + ルーティング登録）
 │  ├─ routes/
-│  │   ├─ scraping.py      ← スクレイピングを叩くAPI or 画面
-│  │   ├─ __init__.py
+│  │   ├─ booking.py          ← Booking.com 検索API　Flask ルート
+│  │   └─ __init__.py
 │  ├─ services/
-│  │   ├─ scraping_service.py  ← 複数サイトのスクレイピングをまとめたり、DB 保存・整形などをやる「サービス」層
+│  │   ├─ booking_service.py  ← Booking.com 用サービス層、スクレイピングをまとめたり、DB 保存・整形などをやる「サービス」層
 │  │   └─ __init__.py
 │  ├─ scrapers/
-│  │   ├─ base.py          ← 共通処理（ヘッダ設定・リトライなど）
-│  │   ├─ example_site.py  ← 特定サイト用スクレイパー
+│  │   ├─ booking.py          ← Playwright で実際にスクレイプする層　外部APIみたいに扱うイメージ
 │  │   └─ __init__.py
 │  ├─ utils/
 │  │   ├─ logger.py
@@ -21,3 +20,12 @@ your-project/
 ├─ .gitignore
 ├─ main.py                 ← Render エントリ用
 └─ README.md
+
+
+ここまで組めば：
+
+ブラウザからは GET /api/booking/search?... を叩くだけ
+
+Flask はサービス関数を呼び出すだけ
+
+Playwright の処理は app/scrapers/booking.py にまとまっている
