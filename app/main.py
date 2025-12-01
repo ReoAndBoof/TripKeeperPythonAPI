@@ -17,6 +17,9 @@ def index():
 def static_files(path):
     return send_from_directory(app.static_folder, path)
 
+# ★ ここで blueprint を登録
+register_routes(app)
+
 # Render は PORT 環境変数を使用
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
