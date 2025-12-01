@@ -74,6 +74,12 @@ def search_booking_hotels(
             "price": "USD 150",
             "url": "https://example.com/hotel2",
         },
+        {
+            "name": f"Dummy Hotel 3 in {city}",
+            "price": "USD 180",
+            "url": "https://example.com/hotel3",
+        },
+
     ]
 
     return dummy_hotels
