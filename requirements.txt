@@ -2,3 +2,4 @@ fastapi
 flask
 uvicorn
 gunicorn
+playwright
