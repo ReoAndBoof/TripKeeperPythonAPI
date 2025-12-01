@@ -1,5 +1,6 @@
 from flask import Flask, send_from_directory
 import os
+from app.routes import register_routes
 
 # プロジェクトルートを基準に build ディレクトリの絶対パスを作る
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
