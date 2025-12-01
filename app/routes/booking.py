@@ -12,7 +12,23 @@ def booking_search():
     /api/booking/search?city=Tokyo&checkin=2025-11-20&checkout=2025-11-22
     みたいに叩くと、Booking.com をスクレイピングして結果を返す。
     """
+    city = request.args.get("city", "Tokyo")
+    checkin = request.args.get("checkin")
+    checkout = request.args.get("checkout")
 
+    if not checkin or not checkout:
+        return jsonify({"error": "checkin and checkout are required"}), 400
+
+    # とりあえず最小パラメータだけ渡す
+    hotels = search_booking_hotels(
+        city=city,
+        checkin=checkin,
+        checkout=checkout,
+    )
+
+    return jsonify({"count": len(hotels), "hotels": hotels})
+
+"""
     city = request.args.get("city", "Tokyo")
     checkin = request.args.get("checkin")
     checkout = request.args.get("checkout")
@@ -35,3 +51,4 @@ def booking_search():
     )
 
     return jsonify({"count": len(hotels), "hotels": hotels})
+"""
