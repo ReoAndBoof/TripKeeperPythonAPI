@@ -35,4 +35,5 @@ def booking_search():
         currency=currency,
     )
 
-    return jsonify({"count": len(hotels), "hotels": hotels})
+    #return jsonify({"count": len(hotels), "hotels": hotels})
+    return jsonify({"count": test, "hotels": test})
