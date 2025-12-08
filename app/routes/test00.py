@@ -12,7 +12,7 @@ def hello():
 
 @test00_bp.route("/search", methods=["GET"])
 def test00_search():
-    """
+    
     /api/booking/search?city=Tokyo&checkin=2025-11-20&checkout=2025-11-22
     みたいに叩くと、Booking.com をスクレイピングして結果を返す。
     """
@@ -38,6 +38,5 @@ def test00_search():
         currency=currency,
     )
 
-    return jsonify({"count": len(hotels), "hotels": hotels})
-    """
+    #return jsonify({"count": len(hotels), "hotels": hotels})
     return jsonify({"count": "test", "hotels": "test"})
