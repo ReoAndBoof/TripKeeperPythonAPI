@@ -13,7 +13,7 @@ def booking_search():
     /api/booking/search?city=Tokyo&checkin=2025-11-20&checkout=2025-11-22
     みたいに叩くと、Booking.com をスクレイピングして結果を返す。
     """
-    
+    """
     city = request.args.get("city", "Tokyo")
     checkin = request.args.get("checkin")
     checkout = request.args.get("checkout")
@@ -35,5 +35,6 @@ def booking_search():
         currency=currency,
     )
 
-    #return jsonify({"count": len(hotels), "hotels": hotels})
+    return jsonify({"count": len(hotels), "hotels": hotels})
+    """
     return jsonify({"count": test, "hotels": test})
