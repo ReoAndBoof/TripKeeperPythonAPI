@@ -3,10 +3,10 @@
 from flask import Blueprint, jsonify, request
 from app.services.booking_service import search_booking_hotels
 
-booking_bp = Blueprint("booking", __name__)
+booking_bp = Blueprint("booking", __name__, url_prefix="/api/booking")
 
 
-@booking_bp.route("/api/booking/search", methods=["GET"])
+@booking_bp.route("/search", methods=["GET"])
 def booking_search():
     """
     /api/booking/search?city=Tokyo&checkin=2025-11-20&checkout=2025-11-22
