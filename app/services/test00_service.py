@@ -59,33 +59,7 @@ def search_booking_hotels(
     Booking.com からホテル一覧を取得するサービス関数。
     ルートからはこの関数だけを呼べばOK。
     """
-    """
-    とりあえずダミーデータを返す実装。
-    /api/booking/search が 200 で返るかの疎通確認用。
-    """
-
-    dummy_hotels = [
-        {
-            "name": f"Dummy Hotel 1 in {city}",
-            "price": "USD 100",
-            "url": "https://example.com/hotel1",
-        },
-        {
-            "name": f"Dummy Hotel 2 in {city}",
-            "price": "USD 150",
-            "url": "https://example.com/hotel2",
-        },
-        {
-            "name": f"Dummy Hotel 3 in {city}",
-            "price": "USD 180",
-            "url": "https://example.com/hotel3",
-        },
-
-    ]
-
-    return dummy_hotels
-
-"""
+    
     url = build_booking_url(
         city=city,
         checkin=checkin,
@@ -102,4 +76,3 @@ def search_booking_hotels(
 
     hotels = scrape_booking(url)
     return hotels
-"""
