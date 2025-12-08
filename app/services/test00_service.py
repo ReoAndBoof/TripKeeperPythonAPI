@@ -2,7 +2,7 @@
 # app/services/test00_service.py
 
 from urllib.parse import urlencode
-from app.scrapers.booking import scrape_booking
+from app.scrapers.test00 import scrape_booking
 
 BASE_URL = "https://www.booking.com/searchresults.html"
 
