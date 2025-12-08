@@ -6,6 +6,9 @@ from app.services.test00_service import search_booking_hotels
 
 test00_bp = Blueprint("test00", __name__)
 
+@test00_bp.get("/hello")
+def hello():
+    return jsonify({"msg": "hello test00"})
 
 @test00_bp.route("/api/test00/search", methods=["GET"])
 def booking_search():
