@@ -40,4 +40,4 @@ def test00_search():
 
     return jsonify({"count": len(hotels), "hotels": hotels})
     """
-    return jsonify({"count": test, "hotels": test})
+    return jsonify({"count": "test", "hotels": "test"})
