@@ -4,7 +4,7 @@
 from flask import Blueprint, jsonify, request
 from app.services.booking_service import search_booking_hotels
 
-test00_bp = Blueprint("booking", __name__)
+test00_bp = Blueprint("test00", __name__)
 
 
 @test00_bp.route("/api/booking/search", methods=["GET"])
