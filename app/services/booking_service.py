@@ -62,7 +62,7 @@ def search_booking_hotels(
     とりあえずダミーデータを返す実装。
     /api/booking/search が 200 で返るかの疎通確認用。
     """
-
+"""
     dummy_hotels = [
         {
             "name": f"Dummy Hotel 1 in {city}",
@@ -83,8 +83,8 @@ def search_booking_hotels(
     ]
 
     return dummy_hotels
-
 """
+
     url = build_booking_url(
         city=city,
         checkin=checkin,
@@ -101,4 +101,4 @@ def search_booking_hotels(
 
     hotels = scrape_booking(url)
     return hotels
-"""
+
