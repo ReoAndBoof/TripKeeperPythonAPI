@@ -68,8 +68,11 @@ def scrape_booking(url: str) -> list[dict]:
                     continue
 
                 name = name_el.inner_text().strip()
+                print(name)
                 price_total = price_el.inner_text().strip()
+                print(price_total)
                 link = link_el.get_attribute("href")
+                print(link)
 
                 hotels.append(
                     {
