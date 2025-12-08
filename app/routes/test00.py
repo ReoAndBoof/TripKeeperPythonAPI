@@ -3,7 +3,7 @@
 
 from flask import Blueprint, jsonify, request
 from app.services.booking_service import search_booking_hotels
-exit();
+
 booking_bp = Blueprint("booking", __name__)
 
 
