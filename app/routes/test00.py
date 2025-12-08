@@ -11,7 +11,7 @@ def hello():
     return jsonify({"msg": "hello test00"})
 
 @test00_bp.route("/search", methods=["GET"])
-def booking_search():
+def test00_search():
     """
     /api/booking/search?city=Tokyo&checkin=2025-11-20&checkout=2025-11-22
     みたいに叩くと、Booking.com をスクレイピングして結果を返す。
