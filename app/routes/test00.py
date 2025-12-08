@@ -2,7 +2,7 @@
 # app/routes/test00.py
 
 from flask import Blueprint, jsonify, request
-from app.services.test00_service import search_booking_hotels
+#from app.services.test00_service import search_booking_hotels
 
 test00_bp = Blueprint("test00", __name__, url_prefix="/api/test00")
 
