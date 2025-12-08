@@ -7,7 +7,7 @@ from app.services.booking_service import search_booking_hotels
 test00_bp = Blueprint("test00", __name__)
 
 
-@test00_bp.route("/api/booking/search", methods=["GET"])
+@test00_bp.route("/api/test00/search", methods=["GET"])
 def booking_search():
     """
     /api/booking/search?city=Tokyo&checkin=2025-11-20&checkout=2025-11-22
