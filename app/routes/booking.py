@@ -13,11 +13,11 @@ def booking_search():
     みたいに叩くと、Booking.com をスクレイピングして結果を返す。
     """
     
-    city = request.args.get("city", "Tokyo")
+    ss = request.args.get("ss", "Tokyo")
     checkin = request.args.get("checkin")
     checkout = request.args.get("checkout")
-    adults = int(request.args.get("adults", 2))
-    children = int(request.args.get("children", 1))
+    group_adults = int(request.args.get("group_adults", 2))
+    group_children = int(request.args.get("group_children", 1))
     child_age = int(request.args.get("child_age", 10))
     currency = request.args.get("currency", "USD")
 
@@ -25,11 +25,11 @@ def booking_search():
         return jsonify({"error": "checkin and checkout are required"}), 400
 
     hotels = search_booking_hotels(
-        city=city,
+        ss=s,
         checkin=checkin,
         checkout=checkout,
-        adults=adults,
-        children=children,
+        group_adults=group_adults,
+        group_children=group_children,
         child_age=child_age,
         currency=currency,
     )
