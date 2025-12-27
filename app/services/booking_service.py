@@ -46,7 +46,7 @@ def build_booking_url(
 
 
 def search_booking_hotels(
-    city: str,
+    ss: str,
     checkin: str,
     checkout: str,
     adults: int = 2,
