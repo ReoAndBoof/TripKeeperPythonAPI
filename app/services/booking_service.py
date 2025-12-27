@@ -9,13 +9,13 @@ BASE_URL = "https://www.booking.com/searchresults.html"
 def build_booking_url(
     dest_id: str = "-246227",
     dest_type: str = "city",
-    city: str = "Tokyo",
+    ss: str = "Tokyo",
     checkin: str = "2025-11-20",
     checkout: str = "2025-11-22",
-    adults: int = 2,
-    children: int = 1,
+    group_adults: int = 2,
+    group_children: int = 1,
     children_age: int = 10,
-    rooms: int = 1,
+    no_rooms: int = 1,
     currency: str = "USD",
     filters: dict | None = None,
 ) -> str:
@@ -25,16 +25,16 @@ def build_booking_url(
     """
 
     params = {
-        "ss": city,
+        "ss": ss,
         "lang": "en-us",
         "src": "searchresults",
         "dest_id": dest_id,
         "dest_type": dest_type,
         "checkin": checkin,
         "checkout": checkout,
-        "group_adults": adults,
-        "no_rooms": rooms,
-        "group_children": children,
+        "group_adults": group_adults,
+        "no_rooms": no_rooms,
+        "group_children": group_children,
         "age": children_age,
         "selected_currency": currency,
     }
