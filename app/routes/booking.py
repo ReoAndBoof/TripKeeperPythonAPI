@@ -9,7 +9,7 @@ booking_bp = Blueprint("booking", __name__, url_prefix="/api/booking")
 @booking_bp.route("/search", methods=["GET"])
 def booking_search():
     """
-    /api/booking/search?city=Tokyo&checkin=2025-11-20&checkout=2025-11-22
+    /api/booking/search?ss=Tokyo&checkin=2025-11-20&checkout=2025-11-22
     みたいに叩くと、Booking.com をスクレイピングして結果を返す。
     """
     
