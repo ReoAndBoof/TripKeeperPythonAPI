@@ -49,8 +49,8 @@ def search_booking_hotels(
     ss: str,
     checkin: str,
     checkout: str,
-    adults: int = 2,
-    children: int = 1,
+    group_adults: int = 2,
+    group_children: int = 1,
     child_age: int = 10,
     currency: str = "USD",
 ) -> list[dict]:
@@ -86,11 +86,11 @@ def search_booking_hotels(
     """
 
     url = build_booking_url(
-        city=city,
+        ss=ss,
         checkin=checkin,
         checkout=checkout,
-        adults=adults,
-        children=children,
+        group_adults=group_adults,
+        group_children=group_children,
         children_age=child_age,
         currency=currency,
         filters={
