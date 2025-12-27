@@ -25,7 +25,7 @@ def booking_search():
         return jsonify({"error": "checkin and checkout are required"}), 400
 
     hotels = search_booking_hotels(
-        ss=s,
+        ss=ss,
         checkin=checkin,
         checkout=checkout,
         group_adults=group_adults,
