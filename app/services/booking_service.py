@@ -99,5 +99,5 @@ def search_booking_hotels(
         },
     )
 
-    hotels = scrape_booking(url)
+    hotels = scrape_booking(url, 10)
     return hotels
