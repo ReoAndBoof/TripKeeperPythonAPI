@@ -3,4 +3,3 @@ flask
 uvicorn
 gunicorn
 playwright
-playwright install chromium chromium
