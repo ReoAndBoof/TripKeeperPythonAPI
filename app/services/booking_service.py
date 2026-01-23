@@ -98,6 +98,6 @@ def search_booking_hotels(
             # "nflt": "fc=2",
         },
     )
-    url = 'https://www.booking.com/searchresults.html?label=gen173nr-10CAEoggI46AdIM1gEaHWIAQGYATO4ARfIAQzYAQPoAQH4AQGIAgGoAgG4As-Ot8sGwAIB0gIkNDIxNzVlYzUtYmFlZi00ZTY0LWJkNzYtZWNmODUzNmQyMjRl2AIB4AIB&aid=304142&ss=Shinjuku+Ward%2C+Tokyo%2C+Tokyo-to%2C+Japan&map=1&efdco=1&lang=en-us&src=index&dest_id=316&dest_type=district&ac_position=0&ac_click_type=b&ac_langcode=en&ac_suggestion_list_length=4&search_selected=true&search_pageview_id=f3a329a8a9e80389&checkin=2026-02-18&checkout=2026-02-19&group_adults=2&no_rooms=1&group_children=0&soz=1&lang_changed=1&selected_currency=USD&nflt=ht_id%3D204%3Breview_score%3D80%3Bfc%3D2#map_closed';
+    #url = 'https://www.booking.com/searchresults.html?label=gen173nr-10CAEoggI46AdIM1gEaHWIAQGYATO4ARfIAQzYAQPoAQH4AQGIAgGoAgG4As-Ot8sGwAIB0gIkNDIxNzVlYzUtYmFlZi00ZTY0LWJkNzYtZWNmODUzNmQyMjRl2AIB4AIB&aid=304142&ss=Shinjuku+Ward%2C+Tokyo%2C+Tokyo-to%2C+Japan&map=1&efdco=1&lang=en-us&src=index&dest_id=316&dest_type=district&ac_position=0&ac_click_type=b&ac_langcode=en&ac_suggestion_list_length=4&search_selected=true&search_pageview_id=f3a329a8a9e80389&checkin=2026-02-18&checkout=2026-02-19&group_adults=2&no_rooms=1&group_children=0&soz=1&lang_changed=1&selected_currency=USD&nflt=ht_id%3D204%3Breview_score%3D80%3Bfc%3D2#map_closed';
     hotels = scrape_booking(url, 10)
     return hotels
