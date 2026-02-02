@@ -7,8 +7,8 @@ BASE_URL = "https://www.booking.com/searchresults.html"
 
 
 def build_booking_url(
-    dest_id: str = "-246227",
-    dest_type: str = "city",
+    #dest_id: str = "-246227",
+    #dest_type: str = "city",
     ss: str = "Tokyo",
     checkin: str = "2025-11-20",
     checkout: str = "2025-11-22",
@@ -17,6 +17,7 @@ def build_booking_url(
     children_age: int = 10,
     no_rooms: int = 1,
     currency: str = "USD",
+    nflt: str = "review_score%3D80%3B",
     filters: dict | None = None,
 ) -> str:
     """
@@ -28,8 +29,8 @@ def build_booking_url(
         "ss": ss,
         "lang": "en-us",
         "src": "searchresults",
-        "dest_id": dest_id,
-        "dest_type": dest_type,
+        #"dest_id": dest_id,
+        #"dest_type": dest_type,
         "checkin": checkin,
         "checkout": checkout,
         "group_adults": group_adults,
@@ -37,6 +38,8 @@ def build_booking_url(
         "group_children": group_children,
         "age": children_age,
         "selected_currency": currency,
+        "nflt": nflt,
+        "order" : "popularity",
     }
 
     if filters:
@@ -53,6 +56,7 @@ def search_booking_hotels(
     group_children: int = 1,
     child_age: int = 10,
     currency: str = "USD",
+    nflt: str = "review_score%3D80%3Bprice%3DUSD-min-200-1",
 ) -> list[dict]:
     """
     Booking.com からホテル一覧を取得するサービス関数。
@@ -93,11 +97,13 @@ def search_booking_hotels(
         group_children=group_children,
         children_age=child_age,
         currency=currency,
+        nflt=nflt,
         filters={
             # 例: 「朝食付き」など filter を追加したい場合
             # "nflt": "fc=2",
         },
     )
-    #url = 'https://www.booking.com/searchresults.html?label=gen173nr-10CAEoggI46AdIM1gEaHWIAQGYATO4ARfIAQzYAQPoAQH4AQGIAgGoAgG4As-Ot8sGwAIB0gIkNDIxNzVlYzUtYmFlZi00ZTY0LWJkNzYtZWNmODUzNmQyMjRl2AIB4AIB&aid=304142&ss=Shinjuku+Ward%2C+Tokyo%2C+Tokyo-to%2C+Japan&map=1&efdco=1&lang=en-us&src=index&dest_id=316&dest_type=district&ac_position=0&ac_click_type=b&ac_langcode=en&ac_suggestion_list_length=4&search_selected=true&search_pageview_id=f3a329a8a9e80389&checkin=2026-02-18&checkout=2026-02-19&group_adults=2&no_rooms=1&group_children=0&soz=1&lang_changed=1&selected_currency=USD&nflt=ht_id%3D204%3Breview_score%3D80%3Bfc%3D2#map_closed';
-    hotels = scrape_booking(url, 10)
+    #url = 'https://www.booking.com/searchresults.html?offset=0&label=keio-plaza-tokyo-y041XbvRkrnVnbUH_q2zbwS162174451113%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwd-56026848433%3Alp9030951%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YcUSe6BbHz0A_uhMSOKgInk&sid=8fc8adfb982b4a7eb5e2de9114e92553&aid=311088&ss=Shinjuku+Ward%2C+Tokyo%2C+Tokyo-to%2C+Japan&ssne=Shibuya+Ward&ssne_untouched=Shibuya+Ward&highlighted_hotels=179845&lang=en-us&src=searchresults&dest_id=316&dest_type=district&ac_position=0&ac_click_type=b&ac_langcode=en&ac_suggestion_list_length=4&search_selected=true&search_pageview_id=1e263caa94fcf10cd0581cb5c4086b01&checkin=2026-02-18&checkout=2026-02-19&group_adults=2&no_rooms=1&group_children=0&nflt=review_score%3D80%3Bfc%3D2%3Bht_id%3D204%3Bht_id%3D209'
+    print(url)
+    hotels = scrape_booking(url, 0)
     return hotels
