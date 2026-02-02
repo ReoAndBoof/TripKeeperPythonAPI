@@ -92,7 +92,7 @@ def scrape_booking(url: str, max_scrolls: int = 0) -> list[dict]:
                 const price = priceEl ? priceEl.textContent.trim() : null;
                 const url = linkEl ? linkEl.href : null;
                 if (!name || !price || !url) return null;
-                return { name, price, url };
+                return { name };
               }).filter(Boolean);
             }
             """

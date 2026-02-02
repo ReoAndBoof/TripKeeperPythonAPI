@@ -2,7 +2,6 @@
 
 from flask import Blueprint, jsonify, request
 from app.services.booking_service import search_booking_hotels
-#from app.services.test00_service import search_booking_hotels
 
 booking_bp = Blueprint("booking", __name__, url_prefix="/api/booking")
 
@@ -21,6 +20,9 @@ def booking_search():
     group_children = int(request.args.get("group_children", 1))
     child_age = int(request.args.get("child_age", 10))
     currency = request.args.get("currency", "USD")
+    #%3D → = %3B → ;
+    #default review_score%3D80%3B
+    nflt = request.args.get("nflt", "review_score%3D80%3B")
 
     if not checkin or not checkout:
         return jsonify({"error": "checkin and checkout are required"}), 400
@@ -33,6 +35,7 @@ def booking_search():
         group_children=group_children,
         child_age=child_age,
         currency=currency,
+        nflt=nflt,
     )
 
     return jsonify({"count": len(hotels), "hotels": hotels})
