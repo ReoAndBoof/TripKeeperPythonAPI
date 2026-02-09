@@ -7,8 +7,8 @@ BASE_URL = "https://www.booking.com/searchresults.html"
 
 
 def build_booking_url(
-    #dest_id: str = "-246227",
-    #dest_type: str = "city",
+    dest_id: str = "316", #shinjuku ward
+    dest_type: str = "district", #範囲をせばめる
     ss: str = "Tokyo",
     checkin: str = "2025-11-20",
     checkout: str = "2025-11-22",
@@ -29,8 +29,8 @@ def build_booking_url(
         "ss": ss,
         "lang": "en-us",
         "src": "searchresults",
-        #"dest_id": dest_id,
-        #"dest_type": dest_type,
+        "dest_id": dest_id,
+        "dest_type": dest_type,
         "checkin": checkin,
         "checkout": checkout,
         "group_adults": group_adults,
