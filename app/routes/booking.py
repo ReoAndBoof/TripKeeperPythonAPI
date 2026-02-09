@@ -16,6 +16,8 @@ def booking_search():
     ss = request.args.get("ss", "Tokyo")
     checkin = request.args.get("checkin")
     checkout = request.args.get("checkout")
+    dest_id = request.args.get("dest_id")
+    dest_type = request.args.get("dest_type")
     group_adults = int(request.args.get("group_adults", 2))
     group_children = int(request.args.get("group_children", 1))
     child_age = int(request.args.get("child_age", 10))

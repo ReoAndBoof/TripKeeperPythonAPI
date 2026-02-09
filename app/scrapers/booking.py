@@ -1,18 +1,15 @@
 # app/scrapers/booking.py
 
-from playwright.sync_api import sync_playwright
-import time
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Callable, Optional
 import random
 
-"""
-USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:115.0) Gecko/20100101 Firefox/115.0",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.96 Safari/537.36",
-]
-"""
-USER_AGENTS = [
+from playwright.sync_api import sync_playwright, Playwright
+
+
+DEFAULT_USER_AGENTS = [
     # Chrome Windows
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36",
     # Chrome macOS
@@ -21,7 +18,7 @@ USER_AGENTS = [
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.96 Safari/537.36",
 ]
 
-VIEWPORTS = [
+DEFAULT_VIEWPORTS = [
     {"width": 1280, "height": 800},
     {"width": 1366, "height": 768},
     {"width": 1440, "height": 900},
@@ -29,78 +26,89 @@ VIEWPORTS = [
 ]
 
 
+@dataclass
+class BookingScraper:
+    headless: bool = True
+    locale: str = "en-US"
+    timeout_goto_ms: int = 20_000
+    timeout_cards_ms: int = 30_000
+    scroll_wait_ms: int = 600
+
+    user_agents: list[str] = field(default_factory=lambda: DEFAULT_USER_AGENTS.copy())
+    viewports: list[dict] = field(default_factory=lambda: DEFAULT_VIEWPORTS.copy())
+
+    block_resource_types: set[str] = field(default_factory=lambda: {"image", "media", "font"})
+    block_url_keywords: tuple[str, ...] = ("doubleclick", "googletagmanager", "google-analytics")
+
+    chromium_args: list[str] = field(
+        default_factory=lambda: [
+            "--disable-dev-shm-usage",
+            "--no-sandbox",
+            "--disable-blink-features=AutomationControlled",
+        ]
+    )
+
+    def _pick_ua_viewport(self) -> tuple[str, dict]:
+        ua = random.choice(self.user_agents)
+        vp = random.choice(self.viewports)
+        return ua, vp
+
+    def _route_handler(self, route):
+        r = route.request
+        if r.resource_type in self.block_resource_types:
+            return route.abort()
+        if any(k in r.url for k in self.block_url_keywords):
+            return route.abort()
+        return route.continue_()
+
+    def scrape(self, url: str, max_scrolls: int = 0) -> list[dict]:
+        """
+        Booking.com 検索結果から name を取得（必要ならここを price/url 等に拡張）
+        """
+        def _run(pw: Playwright) -> list[dict]:
+            ua, vp = self._pick_ua_viewport()
+
+            browser = pw.chromium.launch(
+                headless=self.headless,
+                args=self.chromium_args,
+            )
+            context = browser.new_context(
+                user_agent=ua,
+                viewport=vp,
+                locale=self.locale,
+            )
+            page = context.new_page()
+            page.route("**/*", self._route_handler)
+
+            page.goto(url, wait_until="domcontentloaded", timeout=self.timeout_goto_ms)
+            page.wait_for_selector("div[data-testid='property-card']", timeout=self.timeout_cards_ms)
+
+            for _ in range(max_scrolls):
+                page.mouse.wheel(0, 3000)
+                page.wait_for_timeout(self.scroll_wait_ms)
+
+            hotels = page.evaluate(
+                """
+                () => {
+                  const cards = Array.from(document.querySelectorAll("div[data-testid='property-card'][role='listitem']"));
+                  return cards.map(card => {
+                    const nameEl = card.querySelector("div[data-testid='title']");
+                    const name = nameEl ? nameEl.textContent.trim() : null;
+                    if (!name) return null;
+                    return { name };
+                  }).filter(Boolean);
+                }
+                """
+            )
+
+            context.close()
+            browser.close()
+            return hotels
+
+        with sync_playwright() as pw:
+            return _run(pw)
+
+
+# 既存の関数APIを残したいならラッパーも置ける
 def scrape_booking(url: str, max_scrolls: int = 0) -> list[dict]:
-    """
-    Booking.com 検索結果から name / price / url を取得（高速版）
-    max_scrolls: 無限スクロールで追加ロードが必要なときだけ >0 にする
-    """
-    def _run(playwright):
-        ua = random.choice(USER_AGENTS)
-        vp = random.choice(VIEWPORTS)
-
-        browser = playwright.chromium.launch(
-            headless=True,
-            args=[
-                "--disable-dev-shm-usage",
-                "--no-sandbox",
-                "--disable-blink-features=AutomationControlled",
-            ],
-        )
-
-        context = browser.new_context(
-            user_agent=ua,
-            viewport=vp,
-            locale="en-US",
-        )
-
-        page = context.new_page()
-
-        # 1) 重いリソースをブロックして高速化
-        def block_resources(route):
-            r = route.request
-            if r.resource_type in {"image", "media", "font"}:
-                return route.abort()
-            # tracking系を雑に切る（必要なら調整）
-            if any(x in r.url for x in ["doubleclick", "googletagmanager", "google-analytics"]):
-                return route.abort()
-            return route.continue_()
-
-        page.route("**/*", block_resources)
-
-        # 2) ナビゲーションは必要最低限待つ（domcontentloadedでOK）
-        page.goto(url, wait_until="domcontentloaded", timeout=20000)
-
-        # 3) カードが出たらすぐ進む
-        page.wait_for_selector("div[data-testid='property-card']", timeout=30000)
-
-        # 4) 追加ロードが必要なときだけスクロール（最小回数）
-        #    まずは max_scrolls=0 で試すのがおすすめ
-        for _ in range(max_scrolls):
-            page.mouse.wheel(0, 3000)
-            page.wait_for_timeout(600)  # 小さめ
-
-        # 5) DOM抽出は evaluate で一括（ここが効く）
-        hotels = page.evaluate(
-            """
-            () => {
-              const cards = Array.from(document.querySelectorAll("div[data-testid='property-card'][role='listitem']"));
-              return cards.map(card => {
-                const nameEl = card.querySelector("div[data-testid='title']");
-                const priceEl = card.querySelector("span[data-testid='price-and-discounted-price']");
-                const linkEl = card.querySelector("a[data-testid='title-link']");
-                const name = nameEl ? nameEl.textContent.trim() : null;
-                const price = priceEl ? priceEl.textContent.trim() : null;
-                const url = linkEl ? linkEl.href : null;
-                if (!name || !price || !url) return null;
-                return { name };
-              }).filter(Boolean);
-            }
-            """
-        )
-
-        context.close()
-        browser.close()
-        return hotels
-
-    with sync_playwright() as p:
-        return _run(p)
+    return BookingScraper().scrape(url, max_scrolls=max_scrolls)
