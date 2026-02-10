@@ -88,17 +88,29 @@ class BookingScraper:
                 page.wait_for_timeout(self.scroll_wait_ms)
 
             hotels = page.evaluate(
-                """
-                () => {
-                  const cards = Array.from(document.querySelectorAll("div[data-testid='property-card'][role='listitem']"));
-                  return cards.map(card => {
-                    const nameEl = card.querySelector("div[data-testid='title']");
-                    const name = nameEl ? nameEl.textContent.trim() : null;
-                    if (!name) return null;
-                    return { name };
-                  }).filter(Boolean);
-                }
-                """
+            """
+            () => {
+              const cards = Array.from(document.querySelectorAll("div[data-testid='property-card'][role='listitem']"));
+              return cards.map(card => {
+                const nameEl = card.querySelector("div[data-testid='title']");
+                const priceEl = card.querySelector("span[data-testid='price-and-discounted-price']");
+                // ロケーション（UI差分があるので候補を順に探す）
+                const locationEl =
+                    card.querySelector('[data-testid="address"]') ||
+                    card.querySelector('[data-testid="location"]') ||
+                    card.querySelector('[data-testid="address-line"]') ||
+                    card.querySelector("span[class*='address']");
+                const linkEl = card.querySelector("a[data-testid='title-link']");
+
+                const name = nameEl ? nameEl.textContent.trim() : null;
+                const price = priceEl ? priceEl.textContent.trim() : null;
+                const location = locationEl ? locationEl.textContent.trim() : null;
+                const url = linkEl ? linkEl.href : null;
+                if (!name || !price || !url) return null;
+                return { name, price, location, url };
+              }).filter(Boolean);
+            }
+            """
             )
 
             context.close()
@@ -107,6 +119,23 @@ class BookingScraper:
 
         with sync_playwright() as pw:
             return _run(pw)
+
+        
+def filter_by_location(
+    hotels: list[dict],
+    keywords: list[str],
+    field_name: str = "location",
+) -> list[dict]:
+    normalized_keywords = [k.lower() for k in keywords]
+    filtered = []
+    for h in hotels:
+        text = (h.get(field_name) or "")
+        text_lower = text.lower()
+
+        if any(k in text_lower for k in normalized_keywords):
+            filtered.append(h)
+
+    return filtered
 
 
 # 既存の関数APIを残したいならラッパーも置ける
