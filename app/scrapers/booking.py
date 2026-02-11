@@ -98,7 +98,7 @@ class BookingScraper:
                 const locationEl =
                     card.querySelector('[data-testid="address"]') ||
                     card.querySelector('[data-testid="location"]') ||
-                    card.querySelector('[data-testid="address-line"]') ||
+                    card.querySelector('[data-testid="address-link"]') ||
                     card.querySelector("span[class*='address']");
                 const linkEl = card.querySelector("a[data-testid='title-link']");
 
@@ -124,19 +124,16 @@ class BookingScraper:
 def filter_by_location(
     hotels: list[dict],
     keywords: list[str],
-    field_name: str = "location",
+    field_name: str,
 ) -> list[dict]:
     normalized_keywords = [k.lower() for k in keywords]
     filtered = []
     for h in hotels:
         text = (h.get(field_name) or "")
         text_lower = text.lower()
-
         if any(k in text_lower for k in normalized_keywords):
             filtered.append(h)
-
     return filtered
-
 
 # 既存の関数APIを残したいならラッパーも置ける
 def scrape_booking(url: str, max_scrolls: int = 0) -> list[dict]:
